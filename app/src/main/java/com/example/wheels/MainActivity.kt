@@ -51,82 +51,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             WheelsTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    Spinner()
+                    CardFlip()
                 }
             }
         }
     }
 }
 
-@Composable
-fun Spinner() {
-    val items = listOf(
-        WheelSegment("0", Color.Green, Color.White),
-        WheelSegment("32", Color.Red, Color.White),
-        WheelSegment("15", Color.Black, Color.White),
-        WheelSegment("19", Color.Red, Color.White),
-        WheelSegment("4", Color.Black, Color.White),
-        WheelSegment("21", Color.Red, Color.White),
-        WheelSegment("2", Color.Black, Color.White),
-        WheelSegment("25", Color.Red, Color.White),
-        WheelSegment("17", Color.Black, Color.White),
-        WheelSegment("34", Color.Red, Color.White),
-        WheelSegment("6", Color.Black, Color.White),
-        WheelSegment("27", Color.Red, Color.White),
-        WheelSegment("13", Color.Black, Color.White),
-        WheelSegment("36", Color.Red, Color.White),
-        WheelSegment("11", Color.Black, Color.White),
-        WheelSegment("30", Color.Red, Color.White),
-        WheelSegment("8", Color.Black, Color.White),
-        WheelSegment("23", Color.Red, Color.White),
-        WheelSegment("10", Color.Black, Color.White),
-        WheelSegment("5", Color.Red, Color.White),
-        WheelSegment("24", Color.Black, Color.White),
-        WheelSegment("16", Color.Red, Color.White),
-        WheelSegment("33", Color.Black, Color.White),
-        WheelSegment("1", Color.Red, Color.White),
-        WheelSegment("20", Color.Black, Color.White),
-        WheelSegment("14", Color.Red, Color.White),
-        WheelSegment("31", Color.Black, Color.White),
-        WheelSegment("9", Color.Red, Color.White),
-        WheelSegment("22", Color.Black, Color.White),
-        WheelSegment("18", Color.Red, Color.White),
-        WheelSegment("29", Color.Black, Color.White),
-        WheelSegment("7", Color.Red, Color.White),
-        WheelSegment("28", Color.Black, Color.White),
-        WheelSegment("12", Color.Red, Color.White),
-        WheelSegment("35", Color.Black, Color.White),
-        WheelSegment("3", Color.Red, Color.White),
-        WheelSegment("26", Color.Black, Color.White)
-    )
-
-
-    var rotation by remember { mutableStateOf(0f) }
-
-    fun startSpin() {
-        val randomSpin = (360 * 5) + (0..359).random().toFloat() // Full rotations + random angle
-        rotation += randomSpin // Increase rotation to keep it moving forward
-    }
-
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Button(onClick = {
-            startSpin()
-        }) {
-            Text("Spin Wheel")
-        }
-
-        SpinWheel(
-            modifier = Modifier.size(300.dp),
-            items = items,
-            rotation = rotation,
-            duration = 5000 // Fixed 5 seconds
-        )
-    }
-}
 
 
 
