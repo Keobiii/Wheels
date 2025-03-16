@@ -37,7 +37,9 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.gamble.utils.FlipCard
 import com.example.wheels.Dialog.CustomCardDialog
 import com.example.wheels.ui.theme.pageBackground
@@ -118,14 +120,26 @@ fun CardFlip() {
     fun betButtonClick(){
         betButton = false
 
-        if (userPick == "lower" && firstCardVal > secondCardVal || userPick == "higher" && firstCardVal < secondCardVal) {
-            gameStatus = "You Won"
-            gameStatusDescription = "Trial Count: ${trialCount} :  Bet Val: ${userPick} :  First Card Val: ${firstCardVal} : Second Card Val: ${secondCardVal}"
-        } else{
-            gameStatus = "You Lost"
-            gameStatusDescription = "Trial Count: ${trialCount} :  Bet Val: ${userPick} :  First Card Val: ${firstCardVal} : Second Card Val: ${secondCardVal}"
-            trialCount - 1
+        if (trialCount <= 0 || trialCount >= 4) {
+            gameStatus = "Inefficient Balance"
+            gameStatusDescription = "Please make you have enough balance to play this game!"
+            betButton = true
+        } else {
+
+
+            flipCard2 = flipCard2.next
+
+            if (userPick == "lower" && firstCardVal > secondCardVal || userPick == "higher" && firstCardVal < secondCardVal) {
+                gameStatus = "You Won"
+                gameStatusDescription = "Trial Count: ${trialCount} :  Bet Val: ${userPick} :  First Card Val: ${firstCardVal} : Second Card Val: ${secondCardVal}"
+            } else{
+                gameStatus = "You Lost"
+                gameStatusDescription = "Trial Count: ${trialCount} :  Bet Val: ${userPick} :  First Card Val: ${firstCardVal} : Second Card Val: ${secondCardVal}"
+                trialCount - 1
+            }
         }
+
+
 
         showDialog = true
         trialCount--
@@ -143,10 +157,22 @@ fun CardFlip() {
     }
 
     fun resetGame() {
-        // Set both cards to face forward
-        flipCard1 = FlipCard.Forward
-        flipCard2 = FlipCard.Forward
-        resetRequested = true
+        if (trialCount <= 0 || trialCount >= 4) {
+            gameStatus = "Inefficient Balance"
+            gameStatusDescription = "Please make you have enough balance to play this game!"
+
+            showDialog = true
+
+        } else {
+            flipCard1 = FlipCard.Forward
+            flipCard2 = FlipCard.Forward
+            resetRequested = true
+        }
+
+    }
+
+    fun resetTrial() {
+        trialCount = 3
     }
 
     Column(
@@ -210,10 +236,9 @@ fun CardFlip() {
                 horizontalArrangement = Arrangement.Center
             ) {
                 Button(
-                    enabled = if (betButton || trialCount <= 1) true else false,
+                    enabled = if (betButton) true else false,
                     onClick = {
                         userPick = "lower"
-                        flipCard2 = flipCard2.next
                         betButtonClick()
                     }
                 ) {
@@ -227,7 +252,6 @@ fun CardFlip() {
                     enabled = if (betButton) true else false,
                     onClick = {
                         userPick = "higher"
-                        flipCard2 = flipCard2.next
                         betButtonClick()
                     }
                 ) {
@@ -237,6 +261,39 @@ fun CardFlip() {
                     )
                 }
             }
+
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                if (trialCount <= 0 || trialCount >= 4) {
+                    Button(
+                        onClick = {
+                            resetTrial()
+                        }
+                    ) {
+                        Text(
+                            text = "Reset Trial",
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.Black
+
+                        )
+                    }
+                } else {
+
+                    Text(
+                        text = if (trialCount <= 0 || trialCount >= 4) "No more trial" else "Trial Game: ${trialCount}",
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = if (trialCount <= 0 || trialCount >= 4) Color.Red else Color.Black
+
+                    )
+                }
+
+            }
+
+
         }
 
         Row(
