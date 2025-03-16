@@ -169,6 +169,8 @@ fun CardFlip() {
             resetRequested = true
         }
 
+
+
     }
 
     fun resetTrial() {
@@ -321,6 +323,7 @@ fun CardFlip() {
         }
     }
 }
+
 
 
 @Composable
